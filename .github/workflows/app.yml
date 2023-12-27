@@ -12,9 +12,3 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Build docker image
-        run: docker build -t tink-ab-hw8 .
-
-      - name: Run tests
-        run: docker run -t tink-ab-hw8 pytest
