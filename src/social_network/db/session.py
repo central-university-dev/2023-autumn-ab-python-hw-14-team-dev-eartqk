@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from src.social_network.settings import settings
+
 
 engine = create_engine(
-    'postgresql://postgres:postgres@postgres:5432/homework_db',  # TODO: get env there
-    # echo=True,
+    settings.database_url
 )
 
 
