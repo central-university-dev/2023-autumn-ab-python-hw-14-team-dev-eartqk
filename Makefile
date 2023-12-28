@@ -39,3 +39,6 @@ down:
 
 rebuild:
 	docker compose up -d --build
+
+start:
+	poetry run uvicorn src.social_network.app:app --reload --port 8000
