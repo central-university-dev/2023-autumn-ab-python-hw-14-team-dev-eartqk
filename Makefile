@@ -18,9 +18,12 @@ test:
 # Lint
 
 format:
+	ruff check --fix .
+	ruff format .
 	black . -S
 
 lint:
+	ruff check .
 	black --check .
 	flake8 $(CODE_FOLDERS) $(TEST_FOLDERS)
 	pylint $(CODE_FOLDERS) $(TEST_FOLDERS)
