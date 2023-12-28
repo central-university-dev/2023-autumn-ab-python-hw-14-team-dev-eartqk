@@ -1,25 +1,24 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import List
 
-from sqlalchemy import Text, String, Date, Integer, Boolean
-from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship, backref
+from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String, Table, Text
+from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
 from sqlalchemy.sql import expression
 
-from .base import Base, DefaultIdBase, CreateTimestampMixin, UpdateTimestampMixin
-
+from .base import Base, CreateTimestampMixin, DefaultIdBase, UpdateTimestampMixin
 
 follower_user = Table(
-    'follower_user', Base.metadata,
+    'follower_user',
+    Base.metadata,
     Column('follower_user_id', Integer, ForeignKey('user.id'), primary_key=True),
     Column('followed_user_id', Integer, ForeignKey('user.id'), primary_key=True),
 )
 
 
 follower_organization = Table(
-    'follower_organization', Base.metadata,
+    'follower_organization',
+    Base.metadata,
     Column('follower_user_id', Integer, ForeignKey('user.id'), primary_key=True),
     Column('followed_org_id', Integer, ForeignKey('organization.id'), primary_key=True),
 )
@@ -43,20 +42,22 @@ class User(DefaultIdBase, CreateTimestampMixin):
     country_id: Mapped[int | None] = mapped_column(ForeignKey('country.id'))
     country: Mapped[Country | None] = relationship(back_populates='users', lazy='joined')
 
-    owned_organizations: Mapped[List['Organization'] | None] = relationship(back_populates='owner', lazy='joined')
-    posts: Mapped[List['Post'] | None] = relationship(back_populates='user')
-    comments: Mapped[List['Comment'] | None] = relationship(back_populates='user')
-    reactions: Mapped[List['Reaction'] | None] = relationship(back_populates='user')
+    owned_organizations: Mapped[list['Organization'] | None] = relationship(back_populates='owner', lazy='joined')
+    posts: Mapped[list['Post'] | None] = relationship(back_populates='user')
+    comments: Mapped[list['Comment'] | None] = relationship(back_populates='user')
+    reactions: Mapped[list['Reaction'] | None] = relationship(back_populates='user')
 
-    followed_users: Mapped[List['User']] = relationship(
+    followed_users: Mapped[list['User']] = relationship(
         secondary=follower_user,
         primaryjoin=(follower_user.c.follower_user_id == id),
         secondaryjoin=(follower_user.c.followed_user_id == id),
-        backref=backref('followers', lazy='select'), lazy='select',
+        backref=backref('followers', lazy='select'),
+        lazy='select',
     )
 
-    followed_orgs: Mapped[List['Organization'] | None] = relationship(
-        secondary=follower_organization, back_populates='followers',
+    followed_orgs: Mapped[list['Organization'] | None] = relationship(
+        secondary=follower_organization,
+        back_populates='followers',
         lazy='select',
     )
 
@@ -76,8 +77,10 @@ class Organization(DefaultIdBase, CreateTimestampMixin):
 
     posts: Mapped['Post'] = relationship(back_populates='organization', cascade='all, delete-orphan')
 
-    followers: Mapped[List['User'] | None] = relationship(
-        secondary=follower_organization, back_populates='followed_orgs', cascade='all, delete'
+    followers: Mapped[list['User'] | None] = relationship(
+        secondary=follower_organization,
+        back_populates='followed_orgs',
+        cascade='all, delete',
     )
 
 
@@ -92,11 +95,13 @@ class Post(DefaultIdBase, CreateTimestampMixin, UpdateTimestampMixin):
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user: Mapped['User'] = relationship(back_populates='posts', lazy='joined')
 
-    comments: Mapped[List['Comment'] | None] = relationship(back_populates='post', cascade='all, delete-orphan')
-    attachments: Mapped[List['Attachment'] | None] = relationship(
-        back_populates='post', lazy='joined', cascade='all, delete-orphan',
+    comments: Mapped[list['Comment'] | None] = relationship(back_populates='post', cascade='all, delete-orphan')
+    attachments: Mapped[list['Attachment'] | None] = relationship(
+        back_populates='post',
+        lazy='joined',
+        cascade='all, delete-orphan',
     )
-    reactions: Mapped[List['Reaction'] | None] = relationship(back_populates='post', cascade='all, delete-orphan')
+    reactions: Mapped[list['Reaction'] | None] = relationship(back_populates='post', cascade='all, delete-orphan')
 
 
 class Attachment(DefaultIdBase, CreateTimestampMixin):
@@ -113,6 +118,7 @@ class Comment(DefaultIdBase, CreateTimestampMixin):
     Table that links Users and Posts tables
     Users-Comments-Posts
     """
+
     __tablename__ = 'comment'
 
     post_id: Mapped[int] = mapped_column(ForeignKey('post.id'))
@@ -129,6 +135,7 @@ class Reaction(DefaultIdBase):
     Table that links Users and Posts tables
     Users - Reactions - Posts
     """
+
     __tablename__ = 'reaction'
 
     post_id: Mapped[int] = mapped_column(ForeignKey('post.id'))
@@ -145,5 +152,5 @@ class Country(DefaultIdBase):
 
     name: Mapped[str] = mapped_column(String(64))
 
-    users: Mapped[List['User'] | None] = relationship(back_populates='country')
-    organizations: Mapped[List['Organization'] | None] = relationship(back_populates='country')
+    users: Mapped[list['User'] | None] = relationship(back_populates='country')
+    organizations: Mapped[list['Organization'] | None] = relationship(back_populates='country')

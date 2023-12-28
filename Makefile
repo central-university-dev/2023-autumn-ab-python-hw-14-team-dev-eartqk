@@ -2,6 +2,7 @@ CODE_FOLDERS := src
 TEST_FOLDERS := tests
 
 # Poetry
+all: down build up
 
 install:
 	poetry install --no-root
@@ -29,7 +30,14 @@ lint:
 	pylint $(CODE_FOLDERS) $(TEST_FOLDERS)
 	mypy $(CODE_FOLDERS)
 
+security_checks:
+	poetry run bandit -r $(CODE_FOLDERS)
+	poetry run flake8 $(CODE_FOLDERS)
+
 # Docker
+
+build:
+	docker compose build
 
 up:
 	docker compose up -d

@@ -6,16 +6,12 @@ from src.social_network.db.session import Session, get_session
 
 
 class UsersService:
-    def __init__(
-            self,
-            session: Session = Depends(get_session)
-    ):
+    def __init__(self, session: Session = Depends(get_session)):
         self.session = session
 
     def _get(self, user_id: int, is_active: bool = True) -> tables.User:
         user = (
-            self.session
-            .query(tables.User)
+            self.session.query(tables.User)
             .options(joinedload(tables.User.owned_organizations))
             .filter_by(
                 id=user_id,

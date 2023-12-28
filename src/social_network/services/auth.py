@@ -1,16 +1,15 @@
 from datetime import datetime, timedelta
 
-from fastapi import Cookie, HTTPException, status, Depends
+from fastapi import Cookie, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from passlib.hash import bcrypt
 from pydantic import ValidationError
 
 from src.social_network.db import tables
 from src.social_network.db.session import Session, get_session
-from src.social_network.schemas.auth import Token, UserAuthSchema, CreateUserAuthSchema
+from src.social_network.schemas.auth import CreateUserAuthSchema, Token, UserAuthSchema
 from src.social_network.settings import settings
-
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/sign-in')
 
@@ -26,14 +25,14 @@ def get_current_user_from_cookies(access_token: str | None = Cookie(None)) -> Us
 class AuthService:
     @classmethod
     def verify_password(cls, plain_password: str, hashed_password: str) -> bool:
-        return bcrypt.verify(plain_password, hashed_password)
+        return bcrypt.verify(plain_password, hashed_password)  # type: ignore
 
     @classmethod
     def hash_password(cls, password: str) -> str:
-        return bcrypt.hash(password)
+        return bcrypt.hash(password)  # type: ignore
 
     @classmethod
-    def validate_token(cls, token: str) -> UserAuthSchema:
+    def validate_token(cls, token: str | None) -> UserAuthSchema:
         exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Could not validate credentials',
@@ -84,7 +83,7 @@ class AuthService:
         self.session = session
 
     def register_new_user(self, user_data: CreateUserAuthSchema) -> Token:
-        user = tables.User(
+        user = tables.User(  # type: ignore[call-arg]
             email=user_data.email,
             username=user_data.username,
             password_hash=self.hash_password(user_data.password),
@@ -106,12 +105,7 @@ class AuthService:
             },
         )
 
-        user = (
-            self.session
-                .query(tables.User)
-                .filter(tables.User.username == username)
-                .first()
-        )
+        user = self.session.query(tables.User).filter(tables.User.username == username).first()
 
         if not user:
             raise exception

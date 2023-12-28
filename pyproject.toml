@@ -10,7 +10,7 @@ license = "MIT"
 
 [project.urls]
 "Homepage" = "https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk"
-"Bug Tracker" = "https://github.com/central-university-dev/2023-11-28-refactor-homework-eartqk/issues"
+"Bug Tracker" = "https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk/issues"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -36,6 +36,8 @@ pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 pytest-asyncio = "^0.23.2"
 sqlalchemy = {extras = ["mypy"], version = "^2.0.23"}
+flake8-pyproject = "^1.2.3"
+flake8-bandit = "^4.1.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -43,8 +45,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 120
+indent-width = 4
+target-version = "py311"
 exclude = [
-  ".git", "__pycache__", ".mypy_cache", ".pytest_cache",
+    ".git", "__pycache__", ".mypy_cache", ".pytest_cache",
+    "src/social_network/db/migrations/*",
 ]
 select = [
     "E",  # pycodestyle errors
@@ -53,7 +58,18 @@ select = [
     "I",  # isort
     "C",  # flake8-comprehensions
     "B",  # flake8-bugbear
+    "UP",  # pyupgrade
 ]
+ignore = [
+    "UP037",  # Remove quotes from type annotation
+    "B008",  # Do not perform function call `Depends` in argument defaults
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
@@ -63,6 +79,11 @@ known-third-party = ["fastapi", "pydantic", "starlette"]
 
 [tool.flake8]
 max-line-length = 120
+exclude = [
+    ".git", "__pycache__", ".mypy_cache", ".pytest_cache",
+    "src/social_network/db/migrations/*",
+]
+ignore = ['S101']
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers -W error"
@@ -74,8 +95,17 @@ filterwarnings = [
     "error::DeprecationWarning"
 ]
 
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+extend-exclude = '''
+/(
+  migrations
+)/
+'''
+
 [tool.mypy]
-plugins = ["pydantic.mypy"]
+plugins = ["sqlalchemy.ext.mypy.plugin", "pydantic.mypy"]
 python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true

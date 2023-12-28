@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse, Response
+from fastapi.security import OAuth2PasswordRequestForm
 
 from src.social_network.schemas.auth import (
-    Token, UserAuthSchema,
     CreateUserAuthSchema,
+    Token,
+    UserAuthSchema,
 )
 from src.social_network.schemas.users import UserResponseSchema
 from src.social_network.services.auth import AuthService, get_current_user_from_cookies
@@ -18,8 +19,8 @@ router = APIRouter(
 
 @router.post('/sign-up', response_model=Token)
 def sign_up(
-        user_data: CreateUserAuthSchema,
-        service: AuthService = Depends(),
+    user_data: CreateUserAuthSchema,
+    service: AuthService = Depends(),
 ):
     token_data = service.register_new_user(user_data)
     response = JSONResponse(content=token_data.dict())
@@ -35,8 +36,8 @@ def sign_up(
 
 @router.post('/sign-in', response_model=Token)
 def sign_in(
-        form_data: OAuth2PasswordRequestForm = Depends(),
-        service: AuthService = Depends(),
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    service: AuthService = Depends(),
 ):
     token_data = service.authenticate_user(
         form_data.username,
@@ -62,7 +63,7 @@ def logout():
 
 @router.get('/user', response_model=UserResponseSchema)
 def get_user(
-        user: UserAuthSchema = Depends(get_current_user_from_cookies),
-        service: UsersService = Depends(),
+    user: UserAuthSchema = Depends(get_current_user_from_cookies),  # pylint: disable=W0613
+    service: UsersService = Depends(),  # pylint: disable=W0613
 ):
     pass
