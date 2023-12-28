@@ -42,3 +42,9 @@ rebuild:
 
 start:
 	poetry run uvicorn src.social_network.app:app --reload --port 8000
+
+init_db:
+	poetry run alembic upgrade heads
+
+create_migration:
+	poetry run alembic revision --autogenerate -m $(MIGRATION_NAME)
