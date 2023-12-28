@@ -2,6 +2,8 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
+from src.social_network.schemas.countries import CountrySchema
+
 
 class UserBaseSchema(BaseModel):
     email: str
@@ -15,6 +17,18 @@ class UpdateUserSchema(BaseModel):
     surname: str
     about: str | None
     birthday: date | None
+    avatar_path: str | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserDetailsSchema(BaseModel):
+    count_posts: int | None
+    count_followers: int | None
+    count_following_users: int | None
+    count_following_organizations: int | None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserShortResponseSchema(UserBaseSchema):
@@ -30,7 +44,10 @@ class UserResponseSchema(UserBaseSchema):
     about: str | None
     birthday: date | None
     avatar_path: str | None
+    country: CountrySchema | None = None
     created_at: datetime
+
+    details: UserDetailsSchema | None
 
     model_config = ConfigDict(from_attributes=True)
 

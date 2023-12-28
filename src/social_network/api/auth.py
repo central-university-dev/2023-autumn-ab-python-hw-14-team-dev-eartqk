@@ -63,7 +63,7 @@ def logout():
 
 @router.get('/user', response_model=UserResponseSchema)
 def get_user(
-    user: UserAuthSchema = Depends(get_current_user_from_cookies),  # pylint: disable=W0613
-    service: UsersService = Depends(),  # pylint: disable=W0613
+    user: UserAuthSchema = Depends(get_current_user_from_cookies),
+    service: UsersService = Depends(),
 ):
-    pass
+    return service.get_user_with_details(user.id)
