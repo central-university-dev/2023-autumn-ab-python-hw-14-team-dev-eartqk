@@ -1,7 +1,17 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
+
+from src.social_network.api.auth import router as auth_router
+from src.social_network.api.countries import router as countries_router
 
 app = FastAPI(
     title='HW14 Social Network',
     description='Backend-API for homework 14 AB',
     version='1.0.0',
 )
+
+api_router = APIRouter(prefix='')
+
+api_router.include_router(auth_router)
+api_router.include_router(countries_router)
+
+app.include_router(api_router)
