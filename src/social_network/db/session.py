@@ -1,24 +1,23 @@
+from collections.abc import Generator
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
 from src.social_network.settings import settings
 
-
-engine = create_engine(
-    settings.database_url
-)
+engine = create_engine(settings.database_url)
 
 
-Session = sessionmaker(
+SessionLocal = sessionmaker(
     engine,
     autocommit=False,
     autoflush=False,
 )
 
 
-def get_session() -> Session:
+def get_session() -> Generator[Session, None, None]:
     """Dependency for getting session"""
-    session = Session()
+    session = SessionLocal()
     try:
         yield session
     finally:
