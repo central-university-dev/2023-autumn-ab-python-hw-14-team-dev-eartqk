@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
+from src.social_network.schemas.comments import CommentResponseSchema
 from src.social_network.schemas.organizations import OrganizationPostSchema
 from src.social_network.schemas.users import UserPostSchema
 
@@ -33,5 +34,6 @@ class PostResponseSchema(PostBaseSchema):
     user: UserPostSchema
     organization: OrganizationPostSchema | None
     attachments: list[AttachmentResponseSchema] | None
+    comments: list[CommentResponseSchema] | None
 
     model_config = ConfigDict(from_attributes=True)
