@@ -83,7 +83,7 @@ exclude = [
     ".git", "__pycache__", ".mypy_cache", ".pytest_cache",
     "src/social_network/db/migrations/*",
 ]
-ignore = ['S101', 'W503']
+ignore = ['S101', 'W503', 'S106']
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers -W error"
