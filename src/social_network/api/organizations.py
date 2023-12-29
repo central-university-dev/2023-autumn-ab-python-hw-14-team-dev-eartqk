@@ -7,6 +7,7 @@ from src.social_network.schemas.organizations import (
     OrganizationResponseSchema,
     UpdateOrganizationSchema,
 )
+from src.social_network.schemas.posts import PostResponseSchema
 from src.social_network.schemas.users import UserShortResponseSchema
 from src.social_network.services.auth import get_current_user_from_cookies
 from src.social_network.services.organizations import OrganizationsService
@@ -25,6 +26,11 @@ def get_organizations(skip: int = 0, limit: int = 30, service: OrganizationsServ
 @router.get('/{org_id}', response_model=OrganizationResponseSchema)
 def get_organization(org_id: int, service: OrganizationsService = Depends()):
     return service.get_with_details(org_id)
+
+
+@router.get('/{org_id}/posts', response_model=list[PostResponseSchema])
+def get_organization_posts(org_id: int, skip: int = 0, limit: int = 30, service: OrganizationsService = Depends()):
+    return service.get_org_posts(org_id, skip, limit)
 
 
 @router.get('/{org_id}/followers', response_model=list[UserShortResponseSchema])
