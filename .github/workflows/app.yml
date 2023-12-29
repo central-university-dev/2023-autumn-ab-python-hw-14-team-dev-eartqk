@@ -109,6 +109,9 @@ jobs:
       - name: stub env
         run: |
           cp .env.example .env
+      - name: Up database
+        run: |
+          docker-compose up --build -d postgres minio
       - name: Test coverage
         run: |
           make test
