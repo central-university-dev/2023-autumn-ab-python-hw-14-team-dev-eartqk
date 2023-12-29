@@ -8,7 +8,6 @@ from src.social_network.db.base import Base
 from src.social_network.db.session import engine, get_session
 from src.social_network.schemas.auth import CreateUserAuthSchema
 
-
 Base.metadata.create_all(bind=engine)
 
 
