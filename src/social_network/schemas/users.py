@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict
 
 from src.social_network.schemas.countries import CountrySchema
 from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
