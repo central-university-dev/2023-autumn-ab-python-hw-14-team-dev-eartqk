@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, File, UploadFile, status
-from fastapi.openapi.models import Response
 
 from src.social_network.schemas.auth import UserAuthSchema
 from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
@@ -77,10 +76,9 @@ def upload_avatar(
     return service.upload_avatar(user.id, avatar_file)
 
 
-@router.delete('/', response_model=Response)
+@router.delete('/', status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
     user: UserAuthSchema = Depends(get_current_user_from_cookies),
     service: UsersService = Depends(),
 ):
     service.make_inactive(user.id)
-    return Response(status=status.HTTP_204_NO_CONTENT, description='The user inactive')
