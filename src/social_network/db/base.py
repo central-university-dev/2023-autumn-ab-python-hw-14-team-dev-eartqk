@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, func
-from sqlalchemy.orm import Mapped, declarative_base, mapped_column
+from sqlalchemy.orm import Mapped, declarative_base, declared_attr, mapped_column
 
 Base = declarative_base()
 
@@ -14,9 +14,20 @@ class DefaultIdBase(Base):
     def __str__(self):
         return self.__repr__()
 
+    repr_cols_num = 20
+    repr_cols = ()
+
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        """Return the table name for the model."""
+        return f"{cls.__name__.lower()}"
+
     def __repr__(self):
-        attrs = ', '.join(f'{field}: {getattr(self, field)}' for field in self.__repr_fields__)
-        return f'{self.__class__.__name__}({attrs})'
+        cols = []
+        for idx, col in enumerate(self.__table__.columns.keys()):
+            if col in self.repr_cols or idx < self.repr_cols_num:
+                cols.append(f"{col}={getattr(self, col)}")
+        return f"<{self.__class__.__name__} {', '.join(cols)}>"
 
 
 class CreateTimestampMixin(Base):

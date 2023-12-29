@@ -1,8 +1,8 @@
 def test_create_post(test_client, auth_headers):
     post_data = {'body': 'test_body'}
     response = test_client.post('/posts', json=post_data, headers=auth_headers)
-    assert response.status_code == 200
     post_id = response.json()['id']
+    assert response.status_code == 200
     assert response.json()['body'] == post_data['body']
 
     response = test_client.get(f'/posts/{post_id}')

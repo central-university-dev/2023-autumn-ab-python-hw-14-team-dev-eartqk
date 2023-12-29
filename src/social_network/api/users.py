@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=list[UserShortResponseSchema])
+@router.get('', response_model=list[UserShortResponseSchema])
 def get_users(
     skip: int = 0,
     limit: int = 30,
@@ -69,7 +69,7 @@ def get_user_followed_organizations(
     return service.get_user_followed_organizations(user_id)
 
 
-@router.put('/', response_model=UserResponseSchema)
+@router.put('', response_model=UserResponseSchema)
 def update_user(
     user_data: UpdateUserSchema,
     user: UserAuthSchema = Depends(get_current_user_from_cookies),
@@ -87,7 +87,7 @@ def upload_avatar(
     return service.upload_avatar(user.id, avatar_file)
 
 
-@router.delete('/', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('', status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
     user: UserAuthSchema = Depends(get_current_user_from_cookies),
     service: UsersService = Depends(),

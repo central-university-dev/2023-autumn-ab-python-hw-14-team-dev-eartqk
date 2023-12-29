@@ -41,7 +41,7 @@ class OrganizationResponseSchema(OrganizationBaseResponseSchema):
 
     country: CountrySchema | None
 
-    details: OrganizationDetailsSchema | None
+    details: OrganizationDetailsSchema | None = None
 
 
 class OrganizationPostSchema(BaseModel):

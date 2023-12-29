@@ -49,7 +49,7 @@ class UserResponseSchema(UserBaseSchema):
     created_at: datetime
     owned_organizations: list[OrganizationBaseResponseSchema] | None
 
-    details: UserDetailsSchema | None
+    details: UserDetailsSchema | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
