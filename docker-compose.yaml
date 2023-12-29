@@ -21,7 +21,7 @@ services:
       - backend-network
 
   postgres:
-    image: postgres
+    image: postgres:16.1
     ports:
       - "5432:5432"
     volumes:
@@ -41,7 +41,7 @@ services:
 
 
   minio:
-    image: bitnami/minio:latest
+    image: bitnami/minio:2023
     ports:
       - "9000:9000"
       - "9001:9001"
