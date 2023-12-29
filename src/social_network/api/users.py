@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, File, UploadFile, status
 from fastapi.openapi.models import Response
 
 from src.social_network.schemas.auth import UserAuthSchema
-from src.social_network.schemas.users import UpdateUserSchema, UserResponseSchema, UserShortResponseSchema
+from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
+from src.social_network.schemas.users import (
+    UpdateUserSchema,
+    UserAvatarResponse,
+    UserResponseSchema,
+    UserShortResponseSchema,
+)
 from src.social_network.services.auth import get_current_user_from_cookies
 from src.social_network.services.users import UsersService
 
@@ -29,6 +35,30 @@ def get_user(
     return service.get_user_with_details(user_id)
 
 
+@router.get('/{user_id}/followers', response_model=list[UserShortResponseSchema])
+def get_user_followers(
+    user_id: int,
+    service: UsersService = Depends(),
+):
+    return service.get_user_followers(user_id)
+
+
+@router.get('/{user_id}/followed/users', response_model=list[UserShortResponseSchema])
+def get_user_followed_users(
+    user_id: int,
+    service: UsersService = Depends(),
+):
+    return service.get_user_followed_users(user_id)
+
+
+@router.get('/{user_id}/followed/organizations', response_model=list[OrganizationBaseResponseSchema])
+def get_user_followed_organizations(
+    user_id: int,
+    service: UsersService = Depends(),
+):
+    return service.get_user_followed_organizations(user_id)
+
+
 @router.put('/', response_model=UserResponseSchema)
 def update_user(
     user_data: UpdateUserSchema,
@@ -36,6 +66,15 @@ def update_user(
     service: UsersService = Depends(),
 ):
     return service.update_user(user.id, user_data)
+
+
+@router.put('/avatar', response_model=UserAvatarResponse)
+def upload_avatar(
+    avatar_file: UploadFile = File(...),
+    user: UserAuthSchema = Depends(get_current_user_from_cookies),
+    service: UsersService = Depends(),
+):
+    return service.upload_avatar(user.id, avatar_file)
 
 
 @router.delete('/', response_model=Response)
