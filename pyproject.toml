@@ -112,3 +112,6 @@ warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 exclude = ["__pycache__", "tests"]
+
+[tool.coverage.run]
+omit = ["src/social_network/db/migrations/*"]

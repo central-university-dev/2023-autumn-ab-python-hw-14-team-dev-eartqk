@@ -14,9 +14,15 @@ class DefaultIdBase(Base):
     def __str__(self):
         return self.__repr__()
 
+    repr_cols_num = 20
+    repr_cols = ()
+
     def __repr__(self):
-        attrs = ', '.join(f'{field}: {getattr(self, field)}' for field in self.__repr_fields__)
-        return f'{self.__class__.__name__}({attrs})'
+        cols = []
+        for idx, col in enumerate(self.__table__.columns.keys()):
+            if col in self.repr_cols or idx < self.repr_cols_num:
+                cols.append(f'{col}={getattr(self, col)}')
+        return f"<{self.__class__.__name__} {', '.join(cols)}>"
 
 
 class CreateTimestampMixin(Base):

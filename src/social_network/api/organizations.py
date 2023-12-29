@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=list[OrganizationResponseSchema])
+@router.get('', response_model=list[OrganizationResponseSchema])
 def get_organizations(skip: int = 0, limit: int = 30, service: OrganizationsService = Depends()):
     return service.get_organizations(skip, limit)
 
@@ -38,7 +38,7 @@ def get_organization_followers(org_id: int, service: OrganizationsService = Depe
     return service.get_org_followers(org_id)
 
 
-@router.post('/', response_model=OrganizationResponseSchema)
+@router.post('', response_model=OrganizationResponseSchema)
 def create_organization(
     org_data: CreateOrganizationSchema,
     user: UserAuthSchema = Depends(get_current_user_from_cookies),

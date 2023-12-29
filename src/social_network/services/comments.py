@@ -50,10 +50,7 @@ class CommentsService:
     ) -> tables.Comment:
         comment = self._get(comment_id)
         if comment.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail='You do not have permission',
-            )
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You do not have permission')
         for field, value in comment_data:
             setattr(comment, field, value)
         self.session.commit()
@@ -62,9 +59,6 @@ class CommentsService:
     def delete_comment(self, user_id: int, comment_id: int):
         comment = self._get(comment_id)
         if comment.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail='You do not have permission',
-            )
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You do not have permission')
         self.session.delete(comment)
         self.session.commit()

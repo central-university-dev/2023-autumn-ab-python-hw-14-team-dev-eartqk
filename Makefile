@@ -14,7 +14,7 @@ update:
 # Test
 
 test:
-	pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS)
+	pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS) --cov-fail-under=80
 
 # Lint
 
