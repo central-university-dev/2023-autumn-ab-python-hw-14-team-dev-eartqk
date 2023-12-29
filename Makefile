@@ -14,7 +14,7 @@ update:
 # Test
 
 test:
-	pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS) -p no:warnings
+	pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS)
 
 # Lint
 
