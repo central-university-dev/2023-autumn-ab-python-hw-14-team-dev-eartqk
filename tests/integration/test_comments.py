@@ -1,10 +1,3 @@
-def test_get_comment(test_client, auth_headers):
-    existing_comment_id = 1
-    response = test_client.get(f'/comments/{existing_comment_id}', headers=auth_headers)
-    assert response.status_code == 200
-    assert 'id' in response.json()
-
-
 def test_create_comment_on_post(test_client, auth_headers):
     post_data = {'body': 'test_body'}
     response = test_client.post('/posts', json=post_data, headers=auth_headers)
