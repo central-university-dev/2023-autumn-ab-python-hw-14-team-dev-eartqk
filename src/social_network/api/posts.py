@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, File, UploadFile, status
 
 from src.social_network.schemas.auth import UserAuthSchema
+from src.social_network.schemas.comments import CommentResponseSchema
 from src.social_network.schemas.posts import CreatePostSchema, PostResponseSchema, UpdatePostSchema
 from src.social_network.services.auth import get_current_user_from_cookies
 from src.social_network.services.posts import PostsService
@@ -18,6 +19,15 @@ def get_post(
 ) -> PostResponseSchema:
     post = posts_service.get(post_id)
     return PostResponseSchema.model_validate(post)
+
+
+@router.get('/{post_id}/comments')
+def get_post_comments(
+    post_id: int,
+    posts_service: PostsService = Depends(),
+) -> list[CommentResponseSchema]:
+    comments = posts_service.get_post_comments(post_id)
+    return [CommentResponseSchema.model_validate(comment) for comment in comments]
 
 
 @router.post('/')
