@@ -5,7 +5,7 @@ def test_get_organizations(test_client, auth_headers):
 
 
 def test_create_organization(test_client, auth_headers):
-    org_data = {"name": "Test Organization", "about": "Test Description"}
+    org_data = {'name': 'Test Organization', 'about': 'Test Description'}
     response = test_client.post('/organizations', json=org_data, headers=auth_headers)
     org_id = response.json()['id']
     assert response.status_code == 200
@@ -23,12 +23,12 @@ def test_create_organization(test_client, auth_headers):
 
 
 def test_update_organization(test_client, auth_headers):
-    org_data = {"name": "Test Organization", "about": "Test Description"}
+    org_data = {'name': 'Test Organization', 'about': 'Test Description'}
     response = test_client.post('/organizations', json=org_data, headers=auth_headers)
     org_id = response.json()['id']
     assert response.status_code == 200
 
-    updated_org_data = {"name": "Updated Organization", "about": "Updated Description"}
+    updated_org_data = {'name': 'Updated Organization', 'about': 'Updated Description'}
     response = test_client.put(f'/organizations/{org_id}', json=updated_org_data, headers=auth_headers)
     assert response.status_code == 200
     assert 'id' in response.json()
@@ -37,7 +37,7 @@ def test_update_organization(test_client, auth_headers):
 
 
 def test_get_organization_posts(test_client, auth_headers):
-    org_data = {"name": "Test Organization", "about": "Test Description"}
+    org_data = {'name': 'Test Organization', 'about': 'Test Description'}
     response = test_client.post('/organizations', json=org_data, headers=auth_headers)
     org_id = response.json()['id']
 
@@ -47,7 +47,7 @@ def test_get_organization_posts(test_client, auth_headers):
 
 
 def test_get_organization_followers(test_client, auth_headers):
-    org_data = {"name": "Test Organization", "about": "Test Description"}
+    org_data = {'name': 'Test Organization', 'about': 'Test Description'}
     response = test_client.post('/organizations', json=org_data, headers=auth_headers)
     org_id = response.json()['id']
 

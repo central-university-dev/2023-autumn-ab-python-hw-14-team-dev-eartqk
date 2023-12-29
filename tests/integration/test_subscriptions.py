@@ -1,5 +1,5 @@
 def test_check_follow_organization(test_client, auth_headers):
-    org_data = {"name": "Test Organization", "about": "Test Description"}
+    org_data = {'name': 'Test Organization', 'about': 'Test Description'}
     response = test_client.post('/organizations', json=org_data, headers=auth_headers)
     org_id = response.json()['id']
 

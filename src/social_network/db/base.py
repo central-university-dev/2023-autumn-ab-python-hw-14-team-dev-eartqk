@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, func
-from sqlalchemy.orm import Mapped, declarative_base, declared_attr, mapped_column
+from sqlalchemy.orm import Mapped, declarative_base, mapped_column
 
 Base = declarative_base()
 
@@ -17,16 +17,11 @@ class DefaultIdBase(Base):
     repr_cols_num = 20
     repr_cols = ()
 
-    @declared_attr.directive
-    def __tablename__(cls) -> str:
-        """Return the table name for the model."""
-        return f"{cls.__name__.lower()}"
-
     def __repr__(self):
         cols = []
         for idx, col in enumerate(self.__table__.columns.keys()):
             if col in self.repr_cols or idx < self.repr_cols_num:
-                cols.append(f"{col}={getattr(self, col)}")
+                cols.append(f'{col}={getattr(self, col)}')
         return f"<{self.__class__.__name__} {', '.join(cols)}>"
 
 
