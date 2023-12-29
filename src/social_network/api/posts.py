@@ -30,7 +30,7 @@ def get_post_comments(
     return [CommentResponseSchema.model_validate(comment) for comment in comments]
 
 
-@router.post('/')
+@router.post('')
 def create_post(
     post_data: CreatePostSchema,
     user: UserAuthSchema = Depends(get_current_user_from_cookies),

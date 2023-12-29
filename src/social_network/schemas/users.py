@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict
 
 from src.social_network.schemas.countries import CountrySchema
 from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
@@ -52,12 +52,6 @@ class UserResponseSchema(UserBaseSchema):
     details: UserDetailsSchema | None
 
     model_config = ConfigDict(from_attributes=True)
-
-    @field_validator('birthday')
-    def validate_birthday(cls, v):
-        if v and not date(year=1900, month=1, day=1) <= v <= date.today():
-            raise ValueError('Birthday must be correct')
-        return v
 
 
 class UserAvatarResponse(BaseModel):

@@ -23,7 +23,7 @@ def sign_up(
     service: AuthService = Depends(),
 ):
     token_data = service.register_new_user(user_data)
-    response = JSONResponse(content=token_data.dict())
+    response = JSONResponse(content=token_data.model_dump())
     response.set_cookie(
         key='access_token',
         value=token_data.access_token,
@@ -43,7 +43,7 @@ def sign_in(
         form_data.username,
         form_data.password,
     )
-    response = JSONResponse(content=token_data.dict())
+    response = JSONResponse(content=token_data.model_dump())
     response.set_cookie(
         key='access_token',
         value=token_data.access_token,
