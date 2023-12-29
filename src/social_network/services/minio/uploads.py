@@ -1,7 +1,7 @@
 import json
 from uuid import uuid4
 
-from fastapi import File, HTTPException, UploadFile
+from fastapi import File, HTTPException, UploadFile, status
 from minio import Minio
 from minio.error import S3Error
 
@@ -28,7 +28,9 @@ class UploadsService:
             file_ext = file.filename.split('.')[-1]  # type: ignore
             new_filename = uuid4().hex + '.' + file_ext
         except AttributeError as e:
-            raise HTTPException(status_code=500, detail='Failed to upload file.') from e
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail='Failed to upload file.'
+            ) from e
 
         try:
             response = self.client.put_object(
@@ -42,7 +44,9 @@ class UploadsService:
 
             return str(response.object_name)
         except S3Error as e:
-            raise HTTPException(status_code=500, detail='Failed to upload file.') from e
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail='Failed to upload file.'
+            ) from e
 
     def upload_file(self, file: UploadFile = File(...), only_picture: bool = False) -> str:
         if file.filename:
@@ -51,9 +55,9 @@ class UploadsService:
             file_ext = None
 
         if only_picture and file_ext not in ['jpg', 'jpeg', 'png']:
-            raise HTTPException(status_code=400, detail='File type not allowed.')
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='File type not allowed.')
         if file_ext not in ['jpg', 'jpeg', 'png', 'mp4']:
-            raise HTTPException(status_code=400, detail='File type not allowed.')
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='File type not allowed.')
 
         return self._upload(file)
 
