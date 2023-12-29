@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, File, UploadFile, status
 
 from src.social_network.schemas.auth import UserAuthSchema
 from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
+from src.social_network.schemas.posts import PostResponseSchema
 from src.social_network.schemas.users import (
     UpdateUserSchema,
     UserAvatarResponse,
@@ -32,6 +33,16 @@ def get_user(
     service: UsersService = Depends(),
 ):
     return service.get_user_with_details(user_id)
+
+
+@router.get('/{user_id}/posts', response_model=list[PostResponseSchema])
+def get_user_posts(
+    user_id: int,
+    skip: int = 0,
+    limit: int = 30,
+    service: UsersService = Depends(),
+):
+    return service.get_posts(user_id, skip, limit)
 
 
 @router.get('/{user_id}/followers', response_model=list[UserShortResponseSchema])
