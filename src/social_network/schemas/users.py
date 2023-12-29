@@ -3,6 +3,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from src.social_network.schemas.countries import CountrySchema
+from src.social_network.schemas.organizations import OrganizationBaseResponseSchema
 
 
 class UserBaseSchema(BaseModel):
@@ -46,6 +47,7 @@ class UserResponseSchema(UserBaseSchema):
     avatar_path: str | None
     country: CountrySchema | None = None
     created_at: datetime
+    owned_organizations: list[OrganizationBaseResponseSchema] | None
 
     details: UserDetailsSchema | None
 
@@ -56,3 +58,23 @@ class UserResponseSchema(UserBaseSchema):
         if v and not date(year=1900, month=1, day=1) <= v <= date.today():
             raise ValueError('Birthday must be correct')
         return v
+
+
+class UserAvatarResponse(BaseModel):
+    avatar_path: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserPostSchema(BaseModel):
+    id: int
+    username: str
+    name: str
+    surname: str
+    avatar_path: str | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserOwnerSchema(UserPostSchema):
+    pass
