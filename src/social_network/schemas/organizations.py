@@ -35,13 +35,11 @@ class OrganizationDetailsSchema(BaseModel):
 
 
 class OrganizationResponseSchema(OrganizationBaseResponseSchema):
-    avatar_path: str | None
-
     owner: UserOwnerSchema
 
     country: CountrySchema | None
 
-    details: OrganizationDetailsSchema | None
+    details: OrganizationDetailsSchema | None = None
 
 
 class OrganizationPostSchema(BaseModel):
