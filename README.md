@@ -1,4 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/XssgbD9G)
+[![Static Checks](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk/actions/workflows/app.yml/badge.svg)](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk/actions/workflows/app.yml)
+[![Hits-of-Code](https://hitsofcode.com/github/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk?branch=main)](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-eartqk)
+
 # Разработка в команде
 
 ![][img]
