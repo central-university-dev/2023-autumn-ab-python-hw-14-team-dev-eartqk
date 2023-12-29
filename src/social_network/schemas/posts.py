@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.social_network.schemas.organizations import OrganizationPostSchema
 from src.social_network.schemas.users import UserPostSchema
@@ -22,8 +22,7 @@ class AttachmentResponseSchema(BaseModel):
     post_id: int
     path: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PostResponseSchema(PostBaseSchema):
@@ -35,5 +34,4 @@ class PostResponseSchema(PostBaseSchema):
     organization: OrganizationPostSchema | None
     attachments: list[AttachmentResponseSchema] | None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
