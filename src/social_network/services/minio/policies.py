@@ -13,5 +13,5 @@ media_download_policy = {
             'Resource': ['arn:aws:s3:::media/*'],
         },
     ],
-    'Version': '2023-12-29',
+    'Version': '2012-10-17',
 }
